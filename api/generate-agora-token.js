@@ -1,6 +1,6 @@
-import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
+const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 
-export default function handler(req, res) {
+module.exports = (req, res) => {
   const { channelName, uid } = req.query;
 
   if (!channelName || !uid) {
@@ -24,4 +24,4 @@ export default function handler(req, res) {
   );
 
   return res.status(200).json({ token });
-}
+};
