@@ -1,9 +1,7 @@
 {
-  "name": "agora-token-server",
+  "name": "agora-token-vercel",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
   "dependencies": {
-    "git+https://github.com/AgoraIO-Community/Tools.git#master": "*"
+    "agora-token": "^2.1.2"
   }
 }
