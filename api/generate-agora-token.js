@@ -1,27 +1,33 @@
-const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
+const { RtcTokenBuilder, RtcRole } = require('agora-token');
 
 module.exports = (req, res) => {
-  const { channelName, uid } = req.query;
+  const APP_ID = process.env.AGORA_APP_ID;
+  const APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE;
 
-  if (!channelName || !uid) {
-    return res.status(400).json({ error: 'Missing channelName or uid' });
+  if (!APP_ID || !APP_CERTIFICATE) {
+    return res.status(500).json({ error: 'Missing Agora credentials in environment.' });
   }
 
-  const appID = process.env.AGORA_APP_ID;
-  const appCertificate = process.env.AGORA_APP_CERTIFICATE;
-  const expirationTimeInSeconds = 3600;
+  const channelName = req.query.channelName || req.body?.channelName;
+  const uid = req.query.uid || req.body?.uid || 0;
+  const role = RtcRole.PUBLISHER;
+  const expireTimeSeconds = 3600;
+
+  if (!channelName) {
+    return res.status(400).json({ error: 'channelName is required' });
+  }
 
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+  const privilegeExpireTimestamp = currentTimestamp + expireTimeSeconds;
 
   const token = RtcTokenBuilder.buildTokenWithUid(
-    appID,
-    appCertificate,
+    APP_ID,
+    APP_CERTIFICATE,
     channelName,
-    parseInt(uid),
-    RtcRole.PUBLISHER,
-    privilegeExpiredTs
+    Number(uid),
+    role,
+    privilegeExpireTimestamp
   );
 
-  return res.status(200).json({ token });
+  return res.status(200).json({ token, uid });
 };
