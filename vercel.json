@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/generate-agora-token.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/generate-agora-token",
+      "dest": "api/generate-agora-token.js"
+    }
+  ]
+}
