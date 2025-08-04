@@ -1,7 +1,6 @@
 {
-  "name": "agora-token-vercel",
-  "version": "1.0.0",
   "dependencies": {
-    "agora-token": "^2.1.2"
+    "agora-access-token": "^2.0.4",
+    "agora-token": "^2.0.5"
   }
 }

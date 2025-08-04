@@ -1,6 +1,4 @@
-// api/generate-agora-token.js
-
-import { RtcTokenBuilder, RtcRole } from '../node_modules/Tools/DynamicKey/AgoraDynamicKey/nodejs/src/RtcTokenBuilder.js';
+import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
 
 export default function handler(req, res) {
   const { channelName, uid } = req.query;
