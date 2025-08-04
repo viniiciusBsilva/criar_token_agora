@@ -1,27 +1,28 @@
-import { RtcTokenBuilder, RtcRole } from "agora-access-token";
+// api/generate-agora-token.js
+
+import { RtcTokenBuilder, RtcRole } from '../node_modules/Tools/DynamicKey/AgoraDynamicKey/nodejs/src/RtcTokenBuilder.js';
 
 export default function handler(req, res) {
   const { channelName, uid } = req.query;
 
-  const appId = process.env.AGORA_APP_ID;
-  const appCertificate = process.env.AGORA_APP_CERTIFICATE;
-
   if (!channelName || !uid) {
-    return res.status(400).json({ error: "Missing channelName or uid" });
+    return res.status(400).json({ error: 'Missing channelName or uid' });
   }
 
-  const role = RtcRole.PUBLISHER;
-  const expireTimeInSeconds = 3600;
+  const appID = process.env.AGORA_APP_ID;
+  const appCertificate = process.env.AGORA_APP_CERTIFICATE;
+  const expirationTimeInSeconds = 3600;
+
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const privilegeExpireTs = currentTimestamp + expireTimeInSeconds;
+  const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
 
   const token = RtcTokenBuilder.buildTokenWithUid(
-    appId,
+    appID,
     appCertificate,
     channelName,
-    parseInt(uid, 10),
-    role,
-    privilegeExpireTs
+    parseInt(uid),
+    RtcRole.PUBLISHER,
+    privilegeExpiredTs
   );
 
   return res.status(200).json({ token });
